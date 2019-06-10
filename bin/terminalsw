@@ -1,0 +1,51 @@
+#/bin/sh
+
+all_hosts=("host1" "host2" "host3" "host4")
+
+
+declare -A hostcolors=(\
+  ["host1"]="GnomeTerminalProfile1"\
+  ["host2"]="GnomeTerminalProfile2"\
+  ["host3"]="GnomeTerminalProfile3"\
+  ["host4"]="GnomeTerminalProfile4")
+
+declare -A hostports=(\
+  ["host1"]=""\
+  ["host2"]="-p 2222"\
+  ["host3"]=""\
+  ["host4"]="")
+
+declare -A hostusers=(\
+  ["host1"]=""\
+  ["host2"]=""\
+  ["host3"]="user2"\
+  ["host4"]="")
+
+
+declare -A hostremoteshells=(\
+  ["host1"]="bash"\
+  ["host2"]="bash"\
+  ["host3"]="bash"\
+  ["host4"]="ksh")
+
+declare -A hostremotecommand=(\
+  ["host1"]="top"\
+  ["host2"]="top"\
+  ["host3"]="htop"\
+  ["host4"]="top")
+
+
+for host in ${all_hosts[@]}; do
+ ssh_port="${hostports[$host]}"
+ ssh_user="${hostusers[$host]}"
+ ssh_remoteshell="${hostremoteshells[$host]}"
+ ssh_remotecmd="${hostremotecommand[$host]}"
+ ssh_terminalprofile="${hostcolors[$host]}"
+
+ # For debugging. If for some reason the command below does not work,
+ # Uncomment the echo command below and check the command being executed
+ # Try to run it in a terminal directly. (By copying the text)
+ #echo "gnome-terminal --profile=\"$ssh_terminalprofile\" -- ssh $ssh_port -t -Y $ssh_user$host \"$ssh_remotecmd;$ssh_remoteshell\""
+
+ gnome-terminal --profile="$ssh_terminalprofile" -- ssh $ssh_port -t -Y $ssh_user$host "$ssh_remotecmd;$ssh_remoteshell"
+done

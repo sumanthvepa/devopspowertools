@@ -1,0 +1,7 @@
+
+# Ignore the commit message file
+msg
+
+# Emacs temporary files
+*~
+.tramp_history
